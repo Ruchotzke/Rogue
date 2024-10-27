@@ -24,4 +24,27 @@ impl Room {
         /* Return the generated room */
         Room { origin, size }
     }
+
+    /// Get the bounds (min and max) for both the x and y directions.
+    pub fn get_bounds(&self) -> (Vec2, Vec2) {
+       (Vec2::new(self.origin.x, self.origin.y), Vec2::new(self.origin.x + self.size.x, self.origin.y + self.size.y))
+    }
+
+    /// Compute whether this room intersects with another.
+    pub fn intersects(&self, other: &Room) -> bool {
+        /* Get the bounds of the other room */
+        let bnd = other.get_bounds();
+
+        /* Iterate over every cell */
+        for x in 0..self.size.x {
+            for y in 0..self.size.y {
+                /* Determine isct */
+                if x >= bnd.0.x && x < bnd.1.x && y >= bnd.0.y && y < bnd.1.y{
+                    return false;
+                }
+            }
+        }
+
+       true
+    }
 }
