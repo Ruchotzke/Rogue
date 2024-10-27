@@ -3,6 +3,7 @@ extern crate pancurses;
 mod utils;
 mod player;
 mod game;
+mod world;
 
 use pancurses::{initscr, endwin, Input, init_color, COLOR_RED, COLOR_GREEN, COLOR_BLUE, COLOR_BLACK, init_pair, COLOR_WHITE, COLOR_PAIR, start_color, Window, resize_term};
 use player::Player;
