@@ -4,6 +4,7 @@ pub struct Cell{
     pub access: CellAccess
 }
 
+#[derive(Copy, Clone)]
 pub enum CellAccess {
     OPEN,
     CLOSED
@@ -12,5 +13,11 @@ pub enum CellAccess {
 impl Cell {
     pub fn new() -> Cell{
         Cell{access: CellAccess::OPEN}
+    }
+}
+
+impl Clone for Cell {
+    fn clone(&self) -> Self {
+        Cell{access: self.access}
     }
 }
