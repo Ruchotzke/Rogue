@@ -16,13 +16,13 @@ impl Room {
     /// s_max: maximum x/y sizes
     pub fn rand_new(rng: &mut rand::rngs::ThreadRng, world_size: &Vec2, s_min: &Vec2, s_max: &Vec2) -> Result<Room, String> {
         /* We need to make sure this is possible; adjust the origin max to be s_min away */
-        let min_origin= Vec2::new(world_size.x-s_min.x, world_size.y-s_min.y);
-        if min_origin.x < 0 || min_origin.y < 0 {
+        let max_origin= Vec2::new(world_size.x-s_min.x, world_size.y-s_min.y);
+        if max_origin.x < 0 || max_origin.y < 0 {
             return Err(String::from("Cannot construct room with these arguments."));
         }
 
         /* Generate an origin */
-        let origin = Vec2::new(rng.gen_range(min_origin.x..world_size.x), rng.gen_range(min_origin.y..world_size.y));
+        let origin = Vec2::new(rng.gen_range(0..=max_origin.x), rng.gen_range(0..=max_origin.y));
 
         /* Generate a room size */
         let mut size = Vec2::new(rng.gen_range(s_min.x..s_max.x), rng.gen_range(s_min.y..s_max.y));
@@ -134,7 +134,7 @@ mod tests{
         let room_min: Vec2 = Vec2::new(3, 3);
         let room_max: Vec2 = Vec2::new(22, 22);
 
-        for _i in 0..1000 {
+        for _i in 0..10000 {
             /* Generate a new room */
             let room: Room = match Room::rand_new(&mut rand::thread_rng(), &world_size, &room_min, &room_max){
                 Ok(r) => r,
