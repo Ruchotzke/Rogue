@@ -58,10 +58,14 @@ pub fn generate_map(map_size: Vec2, min_rooms: u16, max_rooms: u16) -> Map {
         /* Check the amount actually generated */
         if rooms.len() >= min_rooms as usize {
             /* If we're in spec, we're done */
+
             /* Add all rooms into the map */
             for room in &rooms {
                 map.add_room(room);
             }
+
+            /* Connect all rooms to another room */
+
             break;
         }
         else{

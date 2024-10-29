@@ -1,5 +1,6 @@
 use super::cell::{Cell, CellAccess};
 use std::vec::Vec;
+use crate::utils::vec2::Vec2;
 use crate::world::cell;
 use crate::world::world_gen::room::Room;
 
@@ -32,10 +33,41 @@ impl Map {
     pub fn add_room(&mut self, room: &Room) {
         let bounds = room.get_bounds();
 
-        for x in bounds.0.x..bounds.1.x-1 {
+        for x in bounds.0.x..bounds.1.x-1 { // -1 to make rooms smaller; no wall-to-wall
             for y in bounds.0.y..bounds.1.y-1 {
                 self.get_cell(x as u32, y as u32).unwrap().access = CellAccess::OPEN;
             }
+        }
+    }
+
+    /// Add a hallway between two rooms
+    pub fn add_hall(&mut self, a: &Room, b: &Room) {
+        /* Pick a random point from both rooms */
+        todo!("Finish me!")
+
+        /* Connect them */
+        self.tunnel_right_angle()
+    }
+
+    /// Tunnel a line between two positions
+    /// Does not draw a straight line, but goes up and over
+    pub fn tunnel_right_angle(&mut self, a: Vec2, b: Vec2){
+        /* Make sure we're always going right */
+        if a.x < b.x {
+            (a,b) = (b,a)
+        }
+
+        /* move over first */
+        for x in a.x..=b.x {
+            self.get_cell(x as u32, a.y as u32).unwrap().access = CellAccess::OPEN;
+        }
+
+        /* now move vertically */
+        if a.y > b.y {
+            (a,b) = (b, a);
+        }
+        for y in a.y..=b.y {
+            self.get_cell(b.x as u32, y as u32).unwrap().access = CellAccess::OPEN;
         }
     }
 }
