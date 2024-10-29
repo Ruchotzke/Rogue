@@ -19,9 +19,9 @@ impl Map {
 
     /// Get a reference to the cell at a given position
     /// Performs a bounds check and may fail
-    pub fn get_cell(&self, x: u32, y: u32) -> Result<&mut Cell, String> {
+    pub fn get_cell(&mut self, x: u32, y: u32) -> Result<&mut Cell, String> {
         /* Bounds check! */
-        if x < 0 || x >= self.width || y < 0 || y >= self.height {
+        if x >= self.width || y >= self.height {
             return Err(format!("x:{} y:{} out of map range", x, y));
         }
 
@@ -32,8 +32,8 @@ impl Map {
     pub fn add_room(&mut self, room: &Room) {
         let bounds = room.get_bounds();
 
-        for x in bounds.0.x..bounds.1.x {
-            for y in bounds.0.y..bounds.1.y {
+        for x in bounds.0.x..bounds.1.x-1 {
+            for y in bounds.0.y..bounds.1.y-1 {
                 self.get_cell(x as u32, y as u32).unwrap().access = CellAccess::OPEN;
             }
         }
