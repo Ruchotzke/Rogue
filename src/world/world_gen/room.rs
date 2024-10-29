@@ -51,16 +51,16 @@ impl Room {
         let bnd = other.get_bounds();
 
         /* Iterate over every cell */
-        for x in 0..self.size.x {
-            for y in 0..self.size.y {
+        for x in self.origin.x..(self.origin.x + self.size.x) {
+            for y in self.origin.y..(self.origin.y + self.size.y) {
                 /* Determine isct */
                 if x >= bnd.0.x && x < bnd.1.x && y >= bnd.0.y && y < bnd.1.y{
-                    return false;
+                    return true;
                 }
             }
         }
 
-       true
+       false
     }
 }
 
@@ -151,5 +151,32 @@ mod tests{
             assert!(bounds.0.x >= 0 && bounds.0.y >= 0);
             assert!(bounds.1.x <= world_size.x && bounds.1.y <= world_size.y);
         }
+    }
+
+    #[test]
+    fn test_intersection(){
+        let r1: Room = Room{
+            origin: Vec2::new(3, 3),
+            size: Vec2::new(2, 2),
+        };
+
+        let r2: Room = Room {
+            origin: Vec2::new(0,0),
+            size: Vec2::new(2,2),
+        };
+
+        let r3: Room = Room {
+            origin: Vec2::new(0, 4),
+            size: Vec2::new(10, 1)
+        };
+
+        assert!(!r1.intersects(&r2));
+        assert!(!r2.intersects(&r1));
+
+        assert!(!r2.intersects(&r3));
+        assert!(!r3.intersects(&r2));
+
+        assert!(r3.intersects(&r1));
+        assert!(r1.intersects(&r3));
     }
 }
