@@ -60,7 +60,8 @@ pub fn generate_map(map_size: Vec2, min_rooms: u16, max_rooms: u16) -> Map {
             /* If we're in spec, we're done */
 
             /* Add all rooms into the map */
-            for room in &rooms {
+            for mut room in &mut rooms {
+                room.shrink();
                 map.add_room(room);
             }
 

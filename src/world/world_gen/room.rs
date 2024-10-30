@@ -63,6 +63,19 @@ impl Room {
        false
     }
 
+    /// Shrink this room by one unit in all directions if possible
+    pub fn shrink(&mut self){
+        if self.size.x > 1 {
+            self.size.x -= 2;
+            self.origin.x += 1;
+        }
+
+        if self.size.y > 1 {
+            self.size.y -= 2;
+            self.origin.y += 1;
+        }
+    }
+
     /// Return a random point on the interior of this room.
     pub fn get_rand_point(&self, rng: &mut rand::rngs::ThreadRng) -> Vec2 {
         Vec2::new(self.origin.x + rng.gen_range(0..self.size.x), self.origin.y + rng.gen_range(0..self.size.y))

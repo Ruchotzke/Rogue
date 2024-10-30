@@ -34,8 +34,8 @@ impl Map {
     pub fn add_room(&mut self, room: &Room) {
         let bounds = room.get_bounds();
 
-        for x in bounds.0.x..bounds.1.x-1 { // -1 to make rooms smaller; no wall-to-wall
-            for y in bounds.0.y..bounds.1.y-1 {
+        for x in bounds.0.x..bounds.1.x {
+            for y in bounds.0.y..bounds.1.y {
                 self.get_cell(x as u32, y as u32).unwrap().access = CellAccess::OPEN;
             }
         }
