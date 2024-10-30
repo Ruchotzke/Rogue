@@ -65,6 +65,10 @@ pub fn generate_map(map_size: Vec2, min_rooms: u16, max_rooms: u16) -> Map {
             }
 
             /* Connect all rooms to another room */
+            for i in 1..rooms.len() {
+                /* Connect the two */
+                map.add_hall(&rooms[i], &rooms[i-1]);
+            }
 
             break;
         }

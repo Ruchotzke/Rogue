@@ -62,6 +62,11 @@ impl Room {
 
        false
     }
+
+    /// Return a random point on the interior of this room.
+    pub fn get_rand_point(&self, rng: &mut rand::rngs::ThreadRng) -> Vec2 {
+        Vec2::new(self.origin.x + rng.gen_range(0..self.size.x), self.origin.y + rng.gen_range(0..self.size.y))
+    }
 }
 
 #[cfg(test)]

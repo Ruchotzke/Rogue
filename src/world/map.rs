@@ -1,3 +1,4 @@
+use std::cmp::max;
 use super::cell::{Cell, CellAccess};
 use std::vec::Vec;
 use crate::utils::vec2::Vec2;
@@ -43,31 +44,45 @@ impl Map {
     /// Add a hallway between two rooms
     pub fn add_hall(&mut self, a: &Room, b: &Room) {
         /* Pick a random point from both rooms */
-        todo!("Finish me!")
+        let a = a.get_rand_point(&mut rand::thread_rng());
+        let b = b.get_rand_point(&mut rand::thread_rng());
 
         /* Connect them */
-        self.tunnel_right_angle()
+        self.tunnel_right_angle(&a, &b);
     }
 
     /// Tunnel a line between two positions
     /// Does not draw a straight line, but goes up and over
-    pub fn tunnel_right_angle(&mut self, a: Vec2, b: Vec2){
-        /* Make sure we're always going right */
-        if a.x < b.x {
-            (a,b) = (b,a)
+    pub fn tunnel_right_angle(&mut self, a: &Vec2, b: &Vec2){
+        /* Get the starting point, which is the leftmost position */
+        let s = match a.x < b.x {
+            true => {a}
+            false => {b}
+        };
+
+        /* Compute the rightmost point for the horizontal */
+        let h = Vec2::new(max(a.x, b.x), s.y);
+
+        /* Compute the endpoint */
+        let e = match a.x < b.x {
+            true => {b}
+            false => {a}
+        };
+
+        /* Tunnel! */
+        for x in (s.x..=h.x) {
+            self.get_cell(x as u32, s.y as u32).unwrap().access = CellAccess::OPEN;
         }
 
-        /* move over first */
-        for x in a.x..=b.x {
-            self.get_cell(x as u32, a.y as u32).unwrap().access = CellAccess::OPEN;
+        if(h.y < e.y){
+            for y in h.y..=e.y {
+                self.get_cell(h.x as u32, y as u32).unwrap().access = CellAccess::OPEN;
+            }
         }
-
-        /* now move vertically */
-        if a.y > b.y {
-            (a,b) = (b, a);
-        }
-        for y in a.y..=b.y {
-            self.get_cell(b.x as u32, y as u32).unwrap().access = CellAccess::OPEN;
+        else {
+            for y in e.y..=h.y {
+                self.get_cell(h.x as u32, y as u32).unwrap().access = CellAccess::OPEN;
+            }
         }
     }
 }
