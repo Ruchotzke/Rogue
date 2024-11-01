@@ -1,6 +1,7 @@
 use std::cmp::max;
 use super::cell::{Cell, CellAccess};
 use std::vec::Vec;
+use crate::utils::grid::bresenham;
 use crate::utils::vec2::Vec2;
 use crate::world::cell;
 use crate::world::world_gen::room::Room;
@@ -83,6 +84,14 @@ impl Map {
             for y in e.y..=h.y {
                 self.get_cell(h.x as u32, y as u32).unwrap().access = CellAccess::OPEN;
             }
+        }
+    }
+
+    pub fn tunnel_straight(&mut self, a: &Vec2, b: &Vec2){
+        let list = bresenham(a, b);
+
+        for spot in list {
+            self.get_cell(spot.x as u32, spot.y as u32).unwrap().access = CellAccess::OPEN;
         }
     }
 }

@@ -38,7 +38,9 @@ impl Vec2{
 
     /// Compute the continuous distance between two vectors
     pub fn distance(a: &Vec2, b: &Vec2) -> f64 {
-        ((a.x - b.x)**2 + (a.y - b.y)**2).sqrt()
+        let x:f64 = (a.x-b.x) as f64;
+        let y:f64 = (a.y-b.y) as f64;
+        (x.powi(2) + y.powi(2)).sqrt()
     }
 
 }
@@ -55,6 +57,6 @@ impl ops::Sub<Vec2> for Vec2 {
     type Output = (Vec2);
 
     fn sub(self, rhs: Vec2) -> Self::Output {
-        self + (-rhs)
+        Vec2::new(self.x - rhs.x, self.y - rhs.y)
     }
 }

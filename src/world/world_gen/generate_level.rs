@@ -71,6 +71,8 @@ pub fn generate_map(map_size: Vec2, min_rooms: u16, max_rooms: u16) -> Map {
                 map.add_hall(&rooms[i], &rooms[i-1]);
             }
 
+            map.tunnel_straight(&Vec2::zero(), &Vec2::new(20, 29));
+
             break;
         }
         else{
