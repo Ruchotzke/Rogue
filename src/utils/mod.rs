@@ -3,3 +3,4 @@ mod vec2f;
 mod circle;
 mod triangle;
 pub mod grid;
+mod delaunay;

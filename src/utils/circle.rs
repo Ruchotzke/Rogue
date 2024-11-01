@@ -1,8 +1,8 @@
 use crate::utils::vec2f::Vec2f;
 
 pub struct Circle {
-    center: Vec2f,
-    radius: f64
+    pub center: Vec2f,
+    pub radius: f64
 }
 
 impl Circle {
